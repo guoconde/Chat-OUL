@@ -2,12 +2,13 @@ const dadosPrincipal = {
     nome: ''
 }
 
-let txt = ''
+let txt = document.querySelector('.texto').innerHTML
 const textoLoading = [
-    'Conectando ao servidor.',
+    'Conectando ao servidor...',
     'Validando suas informações',
     'Testando Filtros',
-    'Sua esposa sabe que você esta aqui?'
+    'Sua esposa sabe que você esta aqui?',
+    'Não vai carregar com essa sua internet...'
 ]
 
 function entrar() {
@@ -33,15 +34,21 @@ function entrar() {
 
 function teste() {
     setInterval(() => {
-        document.querySelector('.texto').innerHTML = textoLoading[0]
-    }, 1000)
-    setInterval(() => {
-        document.querySelector('.texto').innerHTML = textoLoading[1]
-    }, 2000)
-    setInterval(() => {
-        document.querySelector('.texto').innerHTML = textoLoading[2]
-    }, 3000)
-    setInterval(() => {
-        document.querySelector('.texto').innerHTML = textoLoading[3]
-    }, 4000)
+        if(txt == '' || txt == textoLoading[4]) {
+            document.querySelector('.texto').innerHTML = textoLoading[0]
+            txt = textoLoading[0]
+        } else if (txt == textoLoading[0]) {
+            document.querySelector('.texto').innerHTML = textoLoading[1]
+            txt = textoLoading[1]
+        } else if (txt == textoLoading[1]) {
+            document.querySelector('.texto').innerHTML = textoLoading[2]
+            txt = textoLoading[2]
+        } else if (txt == textoLoading[2]) {
+            document.querySelector('.texto').innerHTML = textoLoading[3]
+            txt = textoLoading[3]
+        } else {
+            document.querySelector('.texto').innerHTML = textoLoading[4]
+            txt = textoLoading[4]
+        }
+    }, 1500)
 }
