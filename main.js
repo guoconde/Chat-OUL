@@ -1,5 +1,11 @@
-function teste() {
-    console.log('funcionando...')
+const dadosPrincipal = {
+    nome: ''
 }
 
-teste()
+
+function entrar() {
+    dadosPrincipal.nome = document.querySelector('section input').value
+
+    console.log(dadosPrincipal.nome)
+
+}
