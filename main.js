@@ -1,3 +1,7 @@
+const promessa = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages')
+
+promessa.then(pegarChat)
+
 const dadosPrincipal = {
     nome: ''
 }
@@ -66,6 +70,44 @@ msg.addEventListener('keyup', function(event) {
 
 function enviarMsg() {
     
-    console.log(msg.value)
-    msg.value = null
+    if(msg.value !== '') {
+        console.log(msg.value)
+        msg.value = null
+    }
 }
+const montaChat = document.querySelector('div.chat main')
+
+function pegarChat(resposta) {
+
+    const padrao = resposta.data
+
+    console.log(padrao)
+
+    for (let i = 0; i < resposta.data.length; i++) {
+        
+        if(resposta.data[i].type == 'status') {
+            montaChat.innerHTML += `
+                <div class='status'>
+                    <span>(${resposta.data[i].time}) </span>
+                    <strong>${resposta.data[i].from} </strong>
+                    ${resposta.data[i].text}
+                </div>`
+        } else if (resposta.data[i].type == 'private_message'){
+            montaChat.innerHTML += `
+                <div class='reservada'>
+                    <span>(${resposta.data[i].time}) </span>
+                    <strong>${resposta.data[i].from} </strong>para 
+                    <strong>${resposta.data[i].to}: </strong>
+                    ${resposta.data[i].text}
+                </div>`
+        } else {
+            montaChat.innerHTML += `
+                <div class='mensagem'>
+                    <span>(${resposta.data[i].time}) </span>
+                    <strong>${resposta.data[i].from} </strong>para 
+                    <strong>${resposta.data[i].to}: </strong>
+                    ${resposta.data[i].text}
+                </div>`
+        }
+    }
+} 
