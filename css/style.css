@@ -10,6 +10,8 @@ section {
     align-items: center;    
 
     width: 100%;
+
+    opacity: 1;
 }
 
 section img {
@@ -65,10 +67,18 @@ section div.loading {
     display: flex;
     flex-direction: column;
 
+    margin-top: -60px;
+
     color: #696969;
 
     font-family: 'roboto';
     font-size: 12px;
+
+    opacity: 0;
+    animation-name: aparecer;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
 }
 
 section div.loading img{
@@ -76,6 +86,98 @@ section div.loading img{
     height: 100px;
 }
 
-section div.invisivel {
+
+section div.invisivel, .invisivel {
     display: none;
+}
+
+div.chat {
+    height: 100%;
+    width: 100%;
+
+    background-color: #e5e5e5;
+
+    opacity: 0;
+    animation-name: aparecer;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    animation-delay: .3s;
+}
+
+div.chat header, div.chat footer {
+    width: 100%;
+    height: 80px;
+
+    box-shadow: 0px 0px 5px rgba(00, 00, 00, 0.1);
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.chat header {
+    position: fixed;
+    top: 0;
+    
+    background-color: white;
+    
+    padding: 0 22px;
+}
+
+div.chat header img {
+    width: 75px;
+    height: 53px;
+}
+
+div.chat header ion-icon {
+    color: black;
+    
+    font-size: 45px;
+}
+
+div.chat footer {
+    position: fixed;
+    bottom: 0;
+    
+    background-color: white;
+    
+    padding: 0 18px;
+}
+
+div.chat footer input {
+    width: 85%;
+    height: 70%;
+
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 21px;
+
+    border: none;
+    outline: none;
+}
+
+div.chat footer input::placeholder {
+    color: black;
+}
+
+div.chat footer input:focus {
+    font-style: normal;
+}
+
+div.chat footer ion-icon {
+    font-size: 45px;
+}
+
+div.chat main {
+    padding: 90px 0;
+    
+    height: 100%;
+}
+
+@keyframes aparecer {
+    to {
+        opacity: 1;
+    }
 }
