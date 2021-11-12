@@ -1,10 +1,12 @@
-const promessa = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages')
-
-promessa.then(pegarChat)
-
 const dadosPrincipal = {
     nome: ''
 }
+
+const promessa = axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
+
+const nomesOnline = []
+
+promessa.then(pegarChat)
 
 let txt = document.querySelector('.texto').innerHTML
 const textoLoading = [
@@ -15,7 +17,9 @@ const textoLoading = [
     'Não vai carregar com essa sua internet...'
 ]
 
+
 function entrar(el, classe1, classe2) {
+
     dadosPrincipal.nome = document.querySelector('section input').value
 
     if (dadosPrincipal.nome != '') {
@@ -23,17 +27,23 @@ function entrar(el, classe1, classe2) {
         document.querySelector(`.${classe1}`).classList.add(`${classe2}`)
     } else {
         alert('Por favor preencha seu nome!')
+        window.location.reload()
     }
 
     msgLoading()
 
     setTimeout(carregarChat, 100)
 
+
+    axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', dadosPrincipal)
+        .then(verificaOnline)
+        .catch(tratarErro)
+
 }
 
 function msgLoading() {
     setInterval(() => {
-        if(txt == '' || txt == textoLoading[4]) {
+        if (txt == '' || txt == textoLoading[4]) {
             document.querySelector('.texto').innerHTML = textoLoading[0]
             txt = textoLoading[0]
         } else if (txt == textoLoading[0]) {
@@ -59,7 +69,7 @@ function carregarChat() {
 
 const msg = document.querySelector('div.chat input')
 
-msg.addEventListener('keyup', function(event) {
+msg.addEventListener('keyup', function (event) {
     if (event.keyCode == 13) {
         event.preventDefault()
         enviarMsg()
@@ -69,8 +79,8 @@ msg.addEventListener('keyup', function(event) {
 })
 
 function enviarMsg() {
-    
-    if(msg.value !== '') {
+
+    if (msg.value !== '') {
         console.log(msg.value)
         msg.value = null
     }
@@ -79,35 +89,43 @@ const montaChat = document.querySelector('div.chat main')
 
 function pegarChat(resposta) {
 
-    const padrao = resposta.data
-
-    console.log(padrao)
-
     for (let i = 0; i < resposta.data.length; i++) {
-        
-        if(resposta.data[i].type == 'status') {
+
+        if (resposta.data[i].type == 'status') {
             montaChat.innerHTML += `
                 <div class='status'>
-                    <span>(${resposta.data[i].time}) </span>
-                    <strong>${resposta.data[i].from} </strong>
+                    <span>(${resposta.data[i].time})</span>
+                    <strong>${resposta.data[i].from}</strong>
                     ${resposta.data[i].text}
                 </div>`
-        } else if (resposta.data[i].type == 'private_message'){
+        } else if (resposta.data[i].type == 'private_message') {
             montaChat.innerHTML += `
                 <div class='reservada'>
-                    <span>(${resposta.data[i].time}) </span>
+                    <span>(${resposta.data[i].time})</span>
                     <strong>${resposta.data[i].from} </strong>para 
-                    <strong>${resposta.data[i].to}: </strong>
+                    <strong>${resposta.data[i].to}:</strong>
                     ${resposta.data[i].text}
                 </div>`
         } else {
             montaChat.innerHTML += `
                 <div class='mensagem'>
-                    <span>(${resposta.data[i].time}) </span>
+                    <span>(${resposta.data[i].time})</span>
                     <strong>${resposta.data[i].from} </strong>para 
-                    <strong>${resposta.data[i].to}: </strong>
+                    <strong>${resposta.data[i].to}:</strong>
                     ${resposta.data[i].text}
                 </div>`
         }
     }
-} 
+}
+
+function verificaOnline(resposta) {
+
+    console.log(resposta, 'verificarOnline')
+
+}
+
+function tratarErro(er) {
+
+    console.log(er, 'erro')
+
+}
