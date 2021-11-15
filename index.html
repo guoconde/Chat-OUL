@@ -39,15 +39,43 @@
     <div class="chat invisivel">
         <header>
             <img src="./assets/logo-uol.png" alt="">
-            <ion-icon name="people"></ion-icon>
+            <ion-icon name="people" onclick="document.querySelector('.mostrar_ativos').classList.remove('invisivel')">
+            </ion-icon>
         </header>
         <main>
-            
+
         </main>
         <footer>
-            <input type="text" placeholder="Escreva aqui..." >
+            <input type="text" placeholder="Escreva aqui...">
             <ion-icon name="paper-plane-outline" onclick="enviarMsg()"></ion-icon>
         </footer>
+    </div>
+    <div class="mostrar_ativos invisivel">
+        <div class="transparente" onclick="document.querySelector('.mostrar_ativos').classList.add('invisivel')"></div>
+        <div class="lista">
+            <h1>Escolha um contato para enviar mensagem:</h1>
+            <ul class="contatos">
+
+            </ul>
+            <h1>Escolha a visibilidade:</h1>
+            <ul class="privacidade">
+                <li class="privacidade um" onclick="selecionaPrivacidade(this)">
+                    <div class="nome">
+                        <ion-icon name="lock-open"></ion-icon>
+                        <p>Público</p>
+                    </div>
+                    <ion-icon class="check privacidade" name="checkmark-sharp"></ion-icon>
+                </li>
+                <li class="privacidade dois" onclick="selecionaPrivacidade(this)">
+                    <div class="nome">
+                        <ion-icon name="lock-closed"></ion-icon>
+                        <p>Reservadamente</p>
+                    </div>
+                    <ion-icon class="check privacidade invisivel" name="checkmark-sharp"></ion-icon>
+                </li>
+            </ul>
+        </div>
+
     </div>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
