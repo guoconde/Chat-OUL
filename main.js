@@ -1,13 +1,11 @@
 const dadosPrincipal = {
-    name: ''
+    name: '',
+    to: 'Todos',
+    text: '',
+    tipo: 'message',
 }
 
-const msgEvinviada = {
-    from: dadosPrincipal.name,
-    to: "Todos",
-    text: '',
-    type: "message",
-}
+const contatosRecebidos = []
 
 const montaChat = document.querySelector('div.chat main')
 
@@ -36,7 +34,9 @@ function entrar(el, classe1, classe2) {
 
     setTimeout(carregarChat, 100)
 
-    axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', dadosPrincipal)
+    axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', {
+        name: dadosPrincipal.name
+    })
         .then(pegarChat)
         .catch(tratarErro)
 
@@ -84,14 +84,14 @@ msg.addEventListener('keyup', function (event) {
 function enviarMsg() {
 
     if (msg.value !== '') {
-        msgEvinviada.text = msg.value
+        dadosPrincipal.text = msg.value
     }
 
     axios.post('https://mock-api.driven.com.br/api/v4/uol/messages', {
         from: dadosPrincipal.name,
-        to: "Todos",
+        to: dadosPrincipal.to,
         text: msg.value,
-        type: "private_message",
+        type: dadosPrincipal.tipo,
     })
         .then(pegarChat)
 
@@ -167,12 +167,11 @@ function pegarUsuarios() {
 }
 
 function pegarContatos() {
-    const contatosRecebidos = []
 
     axios.get('https://mock-api.driven.com.br/api/v4/uol/participants').then(el => {
         montaContatos.innerHTML = `
-                <li>
-                    <div class="nome">
+                <li class="nome visivel" onclick='selecionarContato(this)'>
+                    <div>
                         <ion-icon name="people"></ion-icon>
                         <p>Todos</p>
                     </div>
@@ -186,8 +185,8 @@ function pegarContatos() {
             }
 
             montaContatos.innerHTML += `
-                <li>
-                    <div class="nome">
+                <li class="nome" onclick='selecionarContato(this)'>
+                    <div>
                     <ion-icon name="person-circle"></ion-icon>
                         <p>${contatosRecebidos[i]}</p>
                     </div>
@@ -201,18 +200,26 @@ function pegarContatos() {
 }
 
 function selecionaPrivacidade(elemento) {
-    const check = document.querySelector('li.privacidade')
+    const check = document.querySelector('li.privacidade.visivel')
 
-
-    if (elemento.previousElementSibling.children[1].classList.contains('invisivel')) {
-        elemento.children[1].classList.add('invisivel')
-        elemento.previousElementSibling.children[1].classList.remove('invisivel')
-    } else {
-        elemento.children[1].classList.remove('invisivel')
-        elemento.previousElementSibling.children[1].classList.add('invisivel')
+    if (check !== null) {
+        check.classList.remove('visivel')
     }
 
-    // console.dir()
+    elemento.classList.add('visivel')
 
+    dadosPrincipal.tipo = elemento.children[1].classList[1]
+}
+
+function selecionarContato(elemento) {
+    const check = document.querySelector('li.nome.visivel')
+
+    if (check !== null) {
+        check.classList.remove('visivel')
+    }
+
+    elemento.classList.add('visivel')
+
+    dadosPrincipal.to = elemento.children[0].children[1].innerHTML
 }
 

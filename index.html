@@ -59,19 +59,21 @@
             </ul>
             <h1>Escolha a visibilidade:</h1>
             <ul class="privacidade">
-                <li class="privacidade um" onclick="selecionaPrivacidade(this)">
+                <li class="privacidade visivel" onclick="selecionaPrivacidade(this)">
                     <div class="nome">
                         <ion-icon name="lock-open"></ion-icon>
                         <p>Público</p>
                     </div>
-                    <ion-icon class="check privacidade" name="checkmark-sharp"></ion-icon>
+                    <ion-icon class="check message" name="checkmark-sharp">
+                    </ion-icon>
                 </li>
-                <li class="privacidade dois" onclick="selecionaPrivacidade(this)">
+                <li class="privacidade" onclick="selecionaPrivacidade(this)">
                     <div class="nome">
                         <ion-icon name="lock-closed"></ion-icon>
                         <p>Reservadamente</p>
                     </div>
-                    <ion-icon class="check privacidade invisivel" name="checkmark-sharp"></ion-icon>
+                    <ion-icon class="check private_message" name="checkmark-sharp">
+                    </ion-icon>
                 </li>
             </ul>
         </div>

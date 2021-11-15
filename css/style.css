@@ -268,8 +268,17 @@ div.chat main div strong {
     gap: 10px;
 }
 
+li.privacidade.visivel ion-icon.check {
+    opacity: 1;
+}
+
+li.nome.visivel ion-icon.check {
+    opacity: 1;
+}
+
 .check {
     color: #28bb25;
+    opacity: 0;
 }
 
 .transparente {
