@@ -276,6 +276,11 @@ div.chat main div strong {
     gap: 10px;
 }
 
+.contatos li, 
+.pivacidade li {
+    cursor: pointer;
+}
+
 li.privacidade.visivel ion-icon.check {
     opacity: 1;
 }
