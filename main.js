@@ -9,6 +9,9 @@ const contatosRecebidos = []
 
 const montaChat = document.querySelector('div.chat main')
 
+document.querySelector('.para-quem')
+    .innerHTML = `Enviar mensagem para ${dadosPrincipal.to}`
+
 let txt = document.querySelector('.texto').innerHTML
 const textoLoading = [
     'Conectando ao servidor...',
@@ -32,13 +35,15 @@ function entrar(el, classe1, classe2) {
 
     msgLoading()
 
-    setTimeout(carregarChat, 100)
 
     axios.post('https://mock-api.driven.com.br/api/v4/uol/participants', {
         name: dadosPrincipal.name
     })
         .then(pegarChat)
         .catch(tratarErro)
+
+
+    setTimeout(carregarChat, 10000)
 
     verificaStatus()
     pegarUsuarios()
@@ -62,7 +67,7 @@ function msgLoading() {
             document.querySelector('.texto').innerHTML = textoLoading[4]
             txt = textoLoading[4]
         }
-    }, 1500)
+    }, 1000)
 }
 
 function carregarChat() {
@@ -101,6 +106,11 @@ function enviarMsg() {
 function pegarChat() {
     axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
         .then(verificaNome)
+
+    setInterval(() => {
+        axios.get('https://mock-api.driven.com.br/api/v4/uol/messages')
+            .then(verificaNome)
+    }, 3000)
 }
 
 function verificaNome(resposta) {
@@ -111,27 +121,27 @@ function verificaNome(resposta) {
 
         if (resposta.data[i].type == 'status') {
             montaChat.innerHTML += `
-                    <div class='status'>
-                        <span>(${resposta.data[i].time})</span>
-                        <strong>${resposta.data[i].from}</strong>
-                        ${resposta.data[i].text}
-                    </div>`
+            <div class='status' data-identifier="message">
+            <span>(${resposta.data[i].time})</span>
+            <strong>${resposta.data[i].from}</strong>
+            ${resposta.data[i].text}
+            </div>`
         } else if (resposta.data[i].type == 'private_message') {
             montaChat.innerHTML += `
-                    <div class='reservada'>
-                        <span>(${resposta.data[i].time})</span>
-                        <strong>${resposta.data[i].from} </strong>para 
-                        <strong>${resposta.data[i].to}:</strong>
-                        ${resposta.data[i].text}
-                    </div>`
+            <div class='reservada' data-identifier="message">
+            <span>(${resposta.data[i].time})</span>
+            <strong>${resposta.data[i].from} </strong>para 
+            <strong>${resposta.data[i].to}:</strong>
+            ${resposta.data[i].text}
+            </div>`
         } else {
             montaChat.innerHTML += `
-                    <div class='mensagem'>
-                        <span>(${resposta.data[i].time})</span>
-                        <strong>${resposta.data[i].from} </strong>para 
-                        <strong>${resposta.data[i].to}:</strong>
-                        ${resposta.data[i].text}
-                    </div>`
+            <div class='mensagem' data-identifier="message">
+            <span>(${resposta.data[i].time})</span>
+            <strong>${resposta.data[i].from} </strong>para 
+            <strong>${resposta.data[i].to}:</strong>
+            ${resposta.data[i].text}
+            </div>`
         }
     }
 
@@ -140,13 +150,17 @@ function verificaNome(resposta) {
 
 function tratarErro(er) {
 
-    alert('Este nome já foi registrado por outra pessoa')
+    if (er.response.status == 400) {
+        alert('Este nome já foi registrado por outra pessoa')
+    } else {
+        alert('Você foi desconectado')
+    }
     window.location.reload()
 }
 
 function verificaStatus() {
     setInterval(() => {
-        axios.post('https://mock-api.driven.com.br/api/v4/uol/status', dadosPrincipal)
+        axios.post('https://mock-api.driven.com.br/api/v4/uol/status', { name: dadosPrincipal.name })
     }, 5000)
 }
 
@@ -157,7 +171,7 @@ function pegarUsuarios() {
     pegarContatos()
 
     setInterval(() => {
-        axios.get('https://mock-api.driven.com.br/api/v4/uol/participants').then(el => {
+        axios.get('https://mock-api.driven.com.br/api/v4/uol/participants').then(() => {
             montaContatos.innerHTML = ''
 
             pegarContatos()
@@ -170,28 +184,28 @@ function pegarContatos() {
 
     axios.get('https://mock-api.driven.com.br/api/v4/uol/participants').then(el => {
         montaContatos.innerHTML = `
-                <li class="nome visivel" onclick='selecionarContato(this)'>
-                    <div>
-                        <ion-icon name="people"></ion-icon>
-                        <p>Todos</p>
-                    </div>
-                    <ion-icon class="check" name="checkmark-sharp"></ion-icon>
-                </li>
+        <li class="nome visivel" onclick='selecionarContato(this)' data-identifier="participant">
+        <div>
+        <ion-icon name="people"></ion-icon>
+        <p>Todos</p>
+        </div>
+        <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+        </li>
         `
 
         for (let i = 0; i < el.data.length; i++) {
-            if (el.data[i].name != dadosPrincipal.name) {
+            if (el.data[i].name != dadosPrincipal.name && !contatosRecebidos.includes(el.data[i].name)) {
                 contatosRecebidos.push(el.data[i].name)
             }
 
             montaContatos.innerHTML += `
-                <li class="nome" onclick='selecionarContato(this)'>
-                    <div>
-                    <ion-icon name="person-circle"></ion-icon>
-                        <p>${contatosRecebidos[i]}</p>
-                    </div>
-                    <ion-icon class="check" name="checkmark-sharp"></ion-icon>
-                </li>
+            <li class="nome" onclick='selecionarContato(this)' data-identifier="participant">
+            <div>
+            <ion-icon name="person-circle"></ion-icon>
+            <p>${contatosRecebidos[i]}</p>
+            </div>
+            <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+            </li>
             `
         }
 
@@ -209,6 +223,9 @@ function selecionaPrivacidade(elemento) {
     elemento.classList.add('visivel')
 
     dadosPrincipal.tipo = elemento.children[1].classList[1]
+
+    document.querySelector('.para-quem')
+        .innerHTML = `Enviar mensagem para ${dadosPrincipal.to} ${(dadosPrincipal.tipo == 'message') ? '' : '(Reservadamente)'}`
 }
 
 function selecionarContato(elemento) {
@@ -221,5 +238,7 @@ function selecionarContato(elemento) {
     elemento.classList.add('visivel')
 
     dadosPrincipal.to = elemento.children[0].children[1].innerHTML
-}
 
+    document.querySelector('.para-quem')
+        .innerHTML = `Enviar mensagem para ${dadosPrincipal.to} ${(dadosPrincipal.tipo == 'message') ? '' : '(Reservadamente)'}`
+}

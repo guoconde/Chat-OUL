@@ -28,8 +28,8 @@
     <section>
         <img src="./assets/logo-uol.png">
         <div class="login">
-            <input type="text" placeholder="Digite seu nome">
-            <button onclick="entrar(this, 'login', 'invisivel')">Entrar</button>
+            <input type="text" placeholder="Digite seu nome" data-identifier="enter-name">
+            <button onclick="entrar(this, 'login', 'invisivel')" data-identifier="start">Entrar</button>
         </div>
         <div class="loading invisivel">
             <img src="./assets/loading.gif">
@@ -46,8 +46,11 @@
 
         </main>
         <footer>
-            <input type="text" placeholder="Escreva aqui...">
-            <ion-icon name="paper-plane-outline" onclick="enviarMsg()"></ion-icon>
+            <div>
+                <input type="text" placeholder="Escreva aqui...">
+                <p class="para-quem"></p>
+            </div>
+            <ion-icon name="paper-plane-outline" onclick="enviarMsg()" data-identifier="send-message"></ion-icon>
         </footer>
     </div>
     <div class="mostrar_ativos invisivel">
@@ -59,7 +62,7 @@
             </ul>
             <h1>Escolha a visibilidade:</h1>
             <ul class="privacidade">
-                <li class="privacidade visivel" onclick="selecionaPrivacidade(this)">
+                <li class="privacidade visivel" onclick="selecionaPrivacidade(this)" data-identifier="visibility">
                     <div class="nome">
                         <ion-icon name="lock-open"></ion-icon>
                         <p>Público</p>
@@ -67,7 +70,7 @@
                     <ion-icon class="check message" name="checkmark-sharp">
                     </ion-icon>
                 </li>
-                <li class="privacidade" onclick="selecionaPrivacidade(this)">
+                <li class="privacidade" onclick="selecionaPrivacidade(this)" data-identifier="visibility">
                     <div class="nome">
                         <ion-icon name="lock-closed"></ion-icon>
                         <p>Reservadamente</p>

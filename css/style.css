@@ -168,6 +168,14 @@ div.chat footer input:focus {
     font-style: normal;
 }
 
+.para-quem {
+    margin-top: 8px;
+
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 300;
+}
+
 div.chat footer ion-icon {
     font-size: 45px;
 }
