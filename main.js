@@ -41,8 +41,8 @@ function entrar(el, classe1, classe2) {
         .catch(tratarErro)
 
     setTimeout(carregarChat, 10000)
+    setTimeout(verificaStatus, 9000)
 
-    verificaStatus()
     pegarUsuarios()
 }
 
@@ -70,6 +70,8 @@ function msgLoading() {
 function carregarChat() {
     document.querySelector('section').classList.add('invisivel')
     document.querySelector('div.chat').classList.remove('invisivel')
+
+    clearInterval(msgLoading)
 }
 
 const msg = document.querySelector('div.chat input')
@@ -158,6 +160,7 @@ function tratarErro(er) {
 function verificaStatus() {
     setInterval(() => {
         axios.post('https://mock-api.driven.com.br/api/v4/uol/status', { name: dadosPrincipal.name })
+            .catch(tratarErro)
     }, 5000)
 }
 
