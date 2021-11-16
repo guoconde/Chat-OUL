@@ -6,4 +6,4 @@ Linguagem HTML / CSS /JS
 
 Exercício de JS
 
-Url do resultado final (Em construção): https://guoconde.github.io/Chat-UOL/
+Url do resultado final: https://guoconde.github.io/Chat-UOL/
