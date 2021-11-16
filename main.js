@@ -125,9 +125,7 @@ function verificaNome(resposta) {
                     <strong>${resposta.data[i].from}</strong>
                     ${resposta.data[i].text}
                 </div>`
-        } else if (resposta.data[i].type == 'private_message'
-            && (resposta.data[i].name == dadosPrincipal.name
-                || resposta.data[i].to == dadosPrincipal.name)) {
+        } else if (resposta.data[i].type == 'private_message') {
             montaChat.innerHTML += `
                 <div class='reservada' data-identifier="message">
                     <span>(${resposta.data[i].time})</span>
