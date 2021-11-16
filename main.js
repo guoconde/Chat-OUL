@@ -41,7 +41,7 @@ function entrar(el, classe1, classe2) {
         .catch(tratarErro)
 
     setTimeout(carregarChat, 10000)
-    setTimeout(verificaStatus, 9000)
+    setTimeout(verificaStatus, 5000)
 
     pegarUsuarios()
 }
@@ -125,7 +125,9 @@ function verificaNome(resposta) {
                     <strong>${resposta.data[i].from}</strong>
                     ${resposta.data[i].text}
                 </div>`
-        } else if (resposta.data[i].type == 'private_message') {
+        } else if (resposta.data[i].type == 'private_message'
+            && (resposta.data[i].name == dadosPrincipal.name
+                || resposta.data[i].to == dadosPrincipal.name)) {
             montaChat.innerHTML += `
                 <div class='reservada' data-identifier="message">
                     <span>(${resposta.data[i].time})</span>
@@ -176,31 +178,73 @@ function pegarUsuarios() {
 function pegarContatos() {
 
     axios.get('https://mock-api.driven.com.br/api/v4/uol/participants').then(el => {
-        montaContatos.innerHTML =
-            `
-                <li class="nome visivel" onclick='selecionarContato(this)' data-identifier="participant">
-                    <div>
-                        <ion-icon name="people"></ion-icon>
-                        <p>Todos</p>
-                    </div>
-                    <ion-icon class="check" name="checkmark-sharp"></ion-icon>
-                </li>
-            `
 
-        for (let i = 0; i < el.data.length; i++) {
-            if (el.data[i].name != dadosPrincipal.name && !contatosRecebidos.includes(el.data[i].name)) {
-                contatosRecebidos.push(el.data[i].name)
-            }
-            montaContatos.innerHTML +=
+        if (dadosPrincipal.to == 'Todos' || dadosPrincipal.to == '') {
+            montaContatos.innerHTML =
                 `
-                <li class="nome" onclick='selecionarContato(this)' data-identifier="participant">
-                    <div>
-                        <ion-icon name="person-circle"></ion-icon>
-                        <p>${contatosRecebidos[i]}</p>
-                    </div>
-                    <ion-icon class="check" name="checkmark-sharp"></ion-icon>
-                </li>
-            `
+                    <li class="nome visivel" onclick='selecionarContato(this)' data-identifier="participant">
+                        <div>
+                            <ion-icon name="people"></ion-icon>
+                            <p>Todos</p>
+                        </div>
+                        <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+                    </li>
+                `
+            for (let i = 0; i < el.data.length; i++) {
+                if (el.data[i].name != dadosPrincipal.name) {
+                    montaContatos.innerHTML +=
+                        `
+                        <li class="nome" onclick='selecionarContato(this)' data-identifier="participant">
+                            <div>
+                                <ion-icon name="person-circle"></ion-icon>
+                                <p>${el.data[i].name}</p>
+                            </div>
+                            <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+                        </li>
+                    `
+                }
+            }
+        } else {
+            montaContatos.innerHTML =
+                `
+                        <li class="nome" onclick='selecionarContato(this)' data-identifier="participant">
+                            <div>
+                                <ion-icon name="people"></ion-icon>
+                                <p>Todos</p>
+                            </div>
+                            <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+                        </li>
+                    `
+
+            for (let i = 0; i < el.data.length; i++) {
+                if (el.data[i].name != dadosPrincipal.name) {
+
+                    if (el.data[i].name === dadosPrincipal.to) {
+
+                        montaContatos.innerHTML +=
+                            `
+                                <li class="nome visivel" onclick='selecionarContato(this)' data-identifier="participant">
+                                    <div>
+                                        <ion-icon name="person-circle"></ion-icon>
+                                        <p>${el.data[i].name}</p>
+                                    </div>
+                                    <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+                                </li>
+                            `
+                    } else {
+                        montaContatos.innerHTML +=
+                            `
+                                <li class="nome" onclick='selecionarContato(this)' data-identifier="participant">
+                                    <div>
+                                        <ion-icon name="person-circle"></ion-icon>
+                                        <p>${el.data[i].name}</p>
+                                    </div>
+                                    <ion-icon class="check" name="checkmark-sharp"></ion-icon>
+                                </li>
+                            `
+                    }
+                }
+            }
         }
     })
         .catch(tratarErro)

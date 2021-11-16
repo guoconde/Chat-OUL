@@ -63,6 +63,12 @@ section div button {
     color: #696969;
 }
 
+section div button:hover {
+    background-color: #696969;
+    color: #e7e7e7;
+    cursor: pointer;
+}
+
 section div.loading {
     display: flex;
     flex-direction: column;
