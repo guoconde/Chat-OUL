@@ -277,7 +277,7 @@ div.chat main div strong {
 }
 
 .contatos li, 
-.pivacidade li {
+.privacidade li {
     cursor: pointer;
 }
 
@@ -301,4 +301,5 @@ li.nome.visivel ion-icon.check {
 
 ion-icon {
     font-size: 25px;
+    --ionicon-stroke: 120px;
 }
